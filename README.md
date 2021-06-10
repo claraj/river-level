@@ -12,3 +12,14 @@ Mississippi River in Fridley 05288670
 Mississippi River in Brooklyn Park, 05288500
 Minnehaha Creek at Hiawatha Avenue in south Minneapolis 05289800
 Shingle Creek, north Minneapolis 05288705
+
+To use this API, you can only set the site number and number of days of data leading up to today. The API returns the gauge height for the river. 
+
+Examples: 
+
+http://127.0.0.1:5000/api/river/05331000/3   Three days of data for the Mississippi in St. Paul. 
+http://127.0.0.1:5000/api/river/05288705/365    365 days of data for Shingle Creen in Minneapolis.
+
+The number of days must be between 1 and 365.
+
+The original API is slower when requesting larger amounts of data. If you want a year of data, it will take a few seconds. 
