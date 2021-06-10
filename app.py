@@ -7,14 +7,19 @@ from datetime import datetime
 app = Flask(__name__)
 
 
+@app.errorhandler(400)
+def not_found(e):
+    return jsonify({'Error': 'Bad request. Ensure you use a valid river code, and the number of days must be between 1 and 365.'}), 404
+
+
 @app.errorhandler(404)
 def not_found(e):
-    return 'Not found', 404
+    return jsonify({'Error': 'Not found'}), 404
 
 
 @app.errorhandler(500)
 def problem(e):
-    return 'There was an error.', 500
+    return jsonify({'Error': 'There was an error. Please report this to Clara.'}), 500
 
 
 @app.route('/')
@@ -71,7 +76,6 @@ def river_info(site_id, days):
         app.logger.error(f'No series of data for site {site_id}')
         abort(404)
 
-    
     simplified_data = {'data': {} }
 
     for series in time_series:
@@ -91,11 +95,11 @@ def river_info(site_id, days):
             date_str = value_dict['dateTime']
 
             date_time = datetime.fromisoformat(date_str)
-            human_date = datetime.strftime(date_time, '%a %d %b %Y at %I:%M %p')
+            # human_date = datetime.strftime(date_time, '%a %d %b %Y at %I:%M %p')
 
             values_list.append(data_point)
             times_list.append(date_str)
-            times_human_list.append(human_date)
+            # times_human_list.append(human_date)
 
         site_name = series['sourceInfo']['siteName']
         site_name_title = site_name.title()
@@ -103,7 +107,7 @@ def river_info(site_id, days):
         simplified_data['data'][simple_name] = {
             'values': values_list,
             'times': times_list,
-            'formatted_times': times_human_list,
+            # 'formatted_times': times_human_list,
         }
 
         simplified_data['location'] = site_name_title
