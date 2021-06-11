@@ -88,15 +88,19 @@ def river_info(site_id, days):
         values_list = []
         times_list = []
         times_human_list = []
+        timestamp_list = []
 
         for value_dict in values:
 
             data_point = value_dict['value']
             date_str = value_dict['dateTime']
+            
 
             date_time = datetime.fromisoformat(date_str)
             # human_date = datetime.strftime(date_time, '%a %d %b %Y at %I:%M %p')
+            timestamp = date_time.timestamp()
 
+            timestamp_list.append(timestamp)
             values_list.append(data_point)
             times_list.append(date_str)
             # times_human_list.append(human_date)
@@ -107,6 +111,7 @@ def river_info(site_id, days):
         simplified_data['data'][simple_name] = {
             'values': values_list,
             'times': times_list,
+            'timestamps': timestamp_list
             # 'formatted_times': times_human_list,
         }
 
